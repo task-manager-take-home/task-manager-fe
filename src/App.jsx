@@ -1,21 +1,22 @@
-import './App.scss';
-import React, {useState} from 'react';
-import Header from './components /Header';
+import React, { useState, useEffect } from 'react';
+import TaskList from './components /taskList';
 import TaskForm from './components /TaskForm';
-import TaskList from './components /TaskList';
+import { getTasks } from './utils/apiCalls';
 
 function App() {
   const [tasks, setTasks] = useState([]);
 
-  const addTaskToList = (task) => {
-    setTasks([...tasks, task]);
-  };
+  useEffect(() => {
+    getTasks()
+      .then(data => setTasks(data))
+      .catch(error => console.error('Error fetching tasks:', error));
+  }, []);
 
   return (
     <div className="App">
-      <Header/>
-      <TaskForm addTaskToList={addTaskToList} />
-      <TaskList tasks={tasks} />
+      <h1>Task Manager</h1>
+      <TaskForm addTaskToList={(task) => setTasks([...tasks, task])} />
+      <TaskList tasks={tasks} setTasks={setTasks} />
     </div>
   );
 }
