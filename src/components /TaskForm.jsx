@@ -10,17 +10,16 @@ const TaskForm = ({ addTaskToList }) => {
     e.preventDefault();
 
     const newTask = {
-      id: Date.now(), // Generate a temporary ID for now
+      id: Date.now(),
       title,
       description,
       status,
     };
 
-    // Add task via API and update state
     addTask(newTask)
       .then((data) => {
-        addTaskToList(data); // Update the task list with the new task
-        setTitle(""); // Clear the form
+        addTaskToList(data);
+        setTitle("");
         setDescription("");
       })
       .catch((error) =>
@@ -28,8 +27,18 @@ const TaskForm = ({ addTaskToList }) => {
       );
   };
 
+  const formStyle = {
+    backgroundColor: "#f8f8f8",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+    maxWidth: "400px",
+    width: "100%",
+    margin: "0 auto",  // Centers the form horizontally
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={formStyle}>
       <div>
         <label className="usa-label" htmlFor="input-type-text-title">
           Task Title
@@ -39,7 +48,7 @@ const TaskForm = ({ addTaskToList }) => {
           id="input-type-text-title"
           name="input-type-text-title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)} // Bind input to state
+          onChange={(e) => setTitle(e.target.value)}
           required
         />
       </div>
@@ -52,7 +61,7 @@ const TaskForm = ({ addTaskToList }) => {
           id="input-type-text-description"
           name="input-type-text-description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)} // Bind input to state
+          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
       <div>
@@ -64,7 +73,7 @@ const TaskForm = ({ addTaskToList }) => {
           name="status"
           id="status"
           value={status}
-          onChange={(e) => setStatus(e.target.value)} // Bind select to state
+          onChange={(e) => setStatus(e.target.value)}
         >
           <option value="incomplete">Incomplete</option>
           <option value="complete">Complete</option>
