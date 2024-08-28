@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import TaskList from './components /taskList';
-import TaskForm from './components /TaskForm';
-import { getTasks } from './utils/apiCalls';
+import React, { useState, useEffect } from "react";
+import TaskList from "./components /TaskList/taskList";
+import TaskForm from "./components /InputForm/TaskForm";
+import { getTasks } from "./utils/apiCalls";
 
 function App() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     getTasks()
-      .then(data => setTasks(data))
-      .catch(error => console.error('Error fetching tasks:', error));
+      .then((data) => setTasks(data))
+      .catch((error) => console.error("Error fetching tasks:", error));
   }, []);
 
   return (
