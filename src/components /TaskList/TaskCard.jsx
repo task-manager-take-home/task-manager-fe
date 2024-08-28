@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const TaskCard = ({ task, onDelete, onEdit, onCompletionToggle }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -50,14 +50,14 @@ const TaskCard = ({ task, onDelete, onEdit, onCompletionToggle }) => {
               </>
             ) : (
               <>
-                <p>{task.description || 'No description provided.'}</p>
+                <p>{task.description || "No description provided."}</p>
                 <p>Priority: {task.priority}</p>
               </>
             )}
             <label>
               <input
                 type="checkbox"
-                checked={task.status === 'complete'}
+                checked={task.status === "complete"}
                 onChange={() => onCompletionToggle(task)}
               />
               Complete Task
@@ -70,10 +70,16 @@ const TaskCard = ({ task, onDelete, onEdit, onCompletionToggle }) => {
               </button>
             ) : (
               <>
-                <button className="usa-button" onClick={() => setIsEditing(true)}>
+                <button
+                  className="usa-button"
+                  onClick={() => setIsEditing(true)}
+                >
                   Edit
                 </button>
-                <button className="usa-button" onClick={() => onDelete(task.id)}>
+                <button
+                  className="usa-button"
+                  onClick={() => onDelete(task.id)}
+                >
                   Delete Task
                 </button>
               </>

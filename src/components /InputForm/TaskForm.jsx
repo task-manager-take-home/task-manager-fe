@@ -41,9 +41,15 @@ const TaskForm = ({ addTaskToList }) => {
     width: "100%",
     margin: "0 auto",
   };
-
+  const buttonContainerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "20px", // Add some space between the button and the inputs
+  };
+  
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
+      <h2 className="usa-label">Add a New Task</h2> {/* Optional title */}
       <TextField
         label="Task Title"
         id="input-type-text-title"
@@ -77,11 +83,13 @@ const TaskForm = ({ addTaskToList }) => {
           { label: "Complete", value: "complete" },
         ]}
       />
-      <button className="usa-button" type="submit">
-        Add Task
-      </button>
+      <div style={buttonContainerStyle}>
+        <button className="usa-button" type="submit">
+          Add Task
+        </button>
+      </div>
     </form>
-  );
+  );  
 };
 
 export default TaskForm;
