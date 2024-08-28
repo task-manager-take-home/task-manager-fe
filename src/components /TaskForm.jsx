@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { addTask } from "../utils/apiCalls";
+import TextField from "./TextField";
+import SelectField from "./SelectField";
 
 const TaskForm = ({ addTaskToList }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("incomplete");
+  const [priority, setPriority] = useState("secondary");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,6 +17,7 @@ const TaskForm = ({ addTaskToList }) => {
       title,
       description,
       status,
+      priority,
     };
 
     addTask(newTask)
@@ -21,6 +25,7 @@ const TaskForm = ({ addTaskToList }) => {
         addTaskToList(data);
         setTitle("");
         setDescription("");
+        setPriority("secondary");
       })
       .catch((error) =>
         console.error("There was an error creating the task!", error)
@@ -34,51 +39,44 @@ const TaskForm = ({ addTaskToList }) => {
     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
     maxWidth: "400px",
     width: "100%",
-    margin: "0 auto",  // Centers the form horizontally
+    margin: "0 auto",
   };
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
-      <div>
-        <label className="usa-label" htmlFor="input-type-text-title">
-          Task Title
-        </label>
-        <input
-          className="usa-input"
-          id="input-type-text-title"
-          name="input-type-text-title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label className="usa-label" htmlFor="input-type-text-description">
-          Description
-        </label>
-        <input
-          className="usa-input"
-          id="input-type-text-description"
-          name="input-type-text-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div>
-        <label className="usa-label" htmlFor="status">
-          Status
-        </label>
-        <select
-          className="usa-select"
-          name="status"
-          id="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="incomplete">Incomplete</option>
-          <option value="complete">Complete</option>
-        </select>
-      </div>
+      <TextField
+        label="Task Title"
+        id="input-type-text-title"
+        value={title}
+        onChange={setTitle}
+        required={true}
+      />
+      <TextField
+        label="Description"
+        id="input-type-text-description"
+        value={description}
+        onChange={setDescription}
+      />
+      <SelectField
+        label="Priority"
+        id="priority"
+        value={priority}
+        onChange={setPriority}
+        options={[
+          { label: "Immediate", value: "immediate" },
+          { label: "Secondary", value: "secondary" },
+        ]}
+      />
+      <SelectField
+        label="Status"
+        id="status"
+        value={status}
+        onChange={setStatus}
+        options={[
+          { label: "Incomplete", value: "incomplete" },
+          { label: "Complete", value: "complete" },
+        ]}
+      />
       <button className="usa-button" type="submit">
         Add Task
       </button>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { deleteTask, updateTask } from '../utils/apiCalls';
+import TaskCard from './TaskCard';
+import TaskSort from './TaskSort';
 
 const TaskList = ({ tasks, setTasks }) => {
-  const [isEditing, setIsEditing] = useState(null);
-  const [editTitle, setEditTitle] = useState('');
-  const [editDescription, setEditDescription] = useState('');
+  const [sortCriteria, setSortCriteria] = useState('none');
 
   const handleDelete = (id) => {
     deleteTask(id)
@@ -27,88 +27,44 @@ const TaskList = ({ tasks, setTasks }) => {
       .catch(error => console.error('There was an error updating the task!', error));
   };
 
-  const startEditing = (task) => {
-    setIsEditing(task.id);
-    setEditTitle(task.title);
-    setEditDescription(task.description);
-  };
-
-  const handleEditSubmit = (task) => {
-    const updatedTask = {
-      ...task,
-      title: editTitle,
-      description: editDescription,
-    };
-
+  const handleEdit = (updatedTask) => {
     updateTask(updatedTask)
       .then(() => {
-        setTasks(tasks.map(t => (t.id === task.id ? updatedTask : t)));
-        setIsEditing(null);
+        setTasks(tasks.map(t => (t.id === updatedTask.id ? updatedTask : t)));
       })
       .catch(error => console.error('There was an error updating the task!', error));
   };
 
-  const containerStyle = {
-    marginTop: "30px", 
-    alignItems: "start"
-  }
+  // Sorting function
+  const sortTasks = (tasks) => {
+    if (sortCriteria === 'completed') {
+      return tasks.filter(task => task.status === 'complete');
+    } else if (sortCriteria === 'incomplete') {
+      return tasks.filter(task => task.status === 'incomplete');
+    } else if (sortCriteria === 'priority') {
+      return [...tasks].sort((a, b) => {
+        if (a.priority === b.priority) return 0;
+        return a.priority === 'immediate' ? -1 : 1;
+      });
+    }
+    return tasks;
+  };
+
+  const sortedTasks = sortTasks(tasks);
 
   return (
-    <div style={containerStyle} className="grid-container">
-      <div className="card-container"> {/* Flexbox container for cards */}
-        {tasks.length > 0 ? (
-          tasks.map(task => (
-            <div className="card" key={task.id}>
-              <div className="usa-card usa-card--flag">
-                <div className="usa-card__container card-content"> {/* Center content */}
-                  <div className="usa-card__header">
-                    {isEditing === task.id ? (
-                      <input
-                        type="text"
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                      />
-                    ) : (
-                      <h4 className="usa-card__heading">{task.title}</h4>
-                    )}
-                  </div>
-                  <div className="usa-card__body">
-                    {isEditing === task.id ? (
-                      <textarea
-                        value={editDescription}
-                        onChange={(e) => setEditDescription(e.target.value)}
-                      />
-                    ) : (
-                      <p>{task.description || 'No description provided.'}</p>
-                    )}
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={task.status === 'complete'}
-                        onChange={() => handleCompletionToggle(task)}
-                      />
-                      Complete Task
-                    </label>
-                  </div>
-                  <div className="usa-card__footer">
-                    {isEditing === task.id ? (
-                      <button className="usa-button" onClick={() => handleEditSubmit(task)}>
-                        Save
-                      </button>
-                    ) : (
-                      <>
-                        <button className="usa-button" onClick={() => startEditing(task)}>
-                          Edit
-                        </button>
-                        <button className="usa-button" onClick={() => handleDelete(task.id)}>
-                          Delete Task
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="grid-container" style={{ marginTop: "30px", alignItems: "start" }}>
+      <TaskSort sortCriteria={sortCriteria} onSortChange={setSortCriteria} />
+      <div className="card-container">
+        {sortedTasks.length > 0 ? (
+          sortedTasks.map(task => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onCompletionToggle={handleCompletionToggle}
+            />
           ))
         ) : (
           <p>No tasks available</p>
