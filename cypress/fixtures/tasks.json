@@ -1,0 +1,30 @@
+[
+  {
+  "description": "Set up Flask for task manager",
+  "id": 1,
+  "priority": "immediate",
+  "status": "complete",
+  "title": "Finish backend setup"
+  },
+  {
+  "description": "Add tasks, update tasks, delete tasks",
+  "id": 2,
+  "priority": "secondary",
+  "status": "incomplete",
+  "title": "Create API endpoints"
+  },
+  {
+  "description": "testing ",
+  "id": 3,
+  "priority": "secondary",
+  "status": "incomplete",
+  "title": "test"
+  },
+  {
+  "description": "random task ",
+  "id": 4,
+  "priority": "immediate",
+  "status": "complete",
+  "title": "test 2"
+  }
+  ]
