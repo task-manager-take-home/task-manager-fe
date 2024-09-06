@@ -3,7 +3,7 @@
 
 describe("task manager", () => {
   beforeEach(() => {
-    cy.intercept("GET", "http://127.0.0.1:5000/api/v1/tasks", {
+    cy.intercept("GET", "http://127.0.0.1:5001/api/v1/tasks", {
       fixture: "tasks.json",
     }).as("getTasks");
     cy.visit('http://localhost:3000/');
@@ -27,7 +27,7 @@ describe("task manager", () => {
   });
 
   it("should allow user to add tasks", () => {
-    cy.intercept("POST", "http://127.0.0.1:5000/api/v1/tasks", (req) => {
+    cy.intercept("POST", "http://127.0.0.1:5001/api/v1/tasks", (req) => {
       req.reply({
         statusCode: 201,
         body: {

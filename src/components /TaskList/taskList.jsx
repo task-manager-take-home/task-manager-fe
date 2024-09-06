@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { deleteTask, updateTask } from "../../utils/apiCalls";
-import TaskCard from "./TaskCard";
+import {
+  updateTaskInList,
+  deleteTaskFromList,
+  toggleTaskCompletion,
+} from "../../utils/taskUtils.mjs";
+import { deleteTask, updateTask } from "../../utils/apiCalls.js";
 import TaskSort from "./TaskSort";
+import TaskCard from "./TaskCard";
 
 const TaskList = ({ tasks, setTasks }) => {
   const [sortCriteria, setSortCriteria] = useState("none");
@@ -9,7 +14,7 @@ const TaskList = ({ tasks, setTasks }) => {
   const handleDelete = (id) => {
     deleteTask(id)
       .then(() => {
-        setTasks(tasks.filter((task) => task.id !== id));
+        setTasks(deleteTaskFromList(tasks, id));
       })
       .catch((error) =>
         console.error("There was an error deleting the task!", error)
@@ -17,14 +22,11 @@ const TaskList = ({ tasks, setTasks }) => {
   };
 
   const handleCompletionToggle = (task) => {
-    const updatedTask = {
-      ...task,
-      status: task.status === "incomplete" ? "complete" : "incomplete",
-    };
+    const updatedTask = toggleTaskCompletion(task);
 
     updateTask(updatedTask)
       .then(() => {
-        setTasks(tasks.map((t) => (t.id === task.id ? updatedTask : t)));
+        setTasks(updateTaskInList(tasks, updatedTask));
       })
       .catch((error) =>
         console.error("There was an error updating the task!", error)
@@ -34,14 +36,14 @@ const TaskList = ({ tasks, setTasks }) => {
   const handleEdit = (updatedTask) => {
     updateTask(updatedTask)
       .then(() => {
-        setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+        setTasks(updateTaskInList(tasks, updatedTask));
       })
       .catch((error) =>
         console.error("There was an error updating the task!", error)
       );
   };
 
-  // Sorting function
+  // Sorting logic can remain here...
   const sortTasks = (tasks) => {
     if (sortCriteria === "completed") {
       return tasks.filter((task) => task.status === "complete");

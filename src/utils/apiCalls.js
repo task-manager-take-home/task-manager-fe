@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
+const API_BASE_URL = 'http://127.0.0.1:5001/api/v1';
 
 // Fetch all tasks
 export const getTasks = async () => {
@@ -51,7 +51,7 @@ export const deleteTask = async (id) => {
 };
 
 export const updateTask = async (task) => {
-  const response = await fetch(`http://127.0.0.1:5000/tasks/${task.id}`, {
+  const response = await fetch(`${API_BASE_URL}/tasks/${task.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
