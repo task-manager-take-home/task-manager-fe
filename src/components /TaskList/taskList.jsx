@@ -7,7 +7,7 @@ import {
 import { deleteTask, updateTask } from "../../utils/apiCalls.js";
 import TaskSort from "./TaskSort";
 import TaskCard from "./TaskCard";
-import { sortTasks } from "../../utils/taskSorting.js";  // Import the sorting function
+import { sortTasks } from "../../utils/taskSorting.mjs"; 
 
 const TaskList = ({ tasks, setTasks }) => {
   const [sortCriteria, setSortCriteria] = useState("none");
@@ -44,7 +44,6 @@ const TaskList = ({ tasks, setTasks }) => {
       );
   };
 
-  // Use the imported sorting logic
   const sortedTasks = sortTasks(tasks, sortCriteria);
 
   return (
