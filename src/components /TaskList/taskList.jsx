@@ -7,6 +7,7 @@ import {
 import { deleteTask, updateTask } from "../../utils/apiCalls.js";
 import TaskSort from "./TaskSort";
 import TaskCard from "./TaskCard";
+import { sortTasks } from "../../utils/taskSorting.js";  // Import the sorting function
 
 const TaskList = ({ tasks, setTasks }) => {
   const [sortCriteria, setSortCriteria] = useState("none");
@@ -43,22 +44,8 @@ const TaskList = ({ tasks, setTasks }) => {
       );
   };
 
-  // Sorting logic can remain here...
-  const sortTasks = (tasks) => {
-    if (sortCriteria === "completed") {
-      return tasks.filter((task) => task.status === "complete");
-    } else if (sortCriteria === "incomplete") {
-      return tasks.filter((task) => task.status === "incomplete");
-    } else if (sortCriteria === "priority") {
-      return [...tasks].sort((a, b) => {
-        if (a.priority === b.priority) return 0;
-        return a.priority === "immediate" ? -1 : 1;
-      });
-    }
-    return tasks;
-  };
-
-  const sortedTasks = sortTasks(tasks);
+  // Use the imported sorting logic
+  const sortedTasks = sortTasks(tasks, sortCriteria);
 
   return (
     <div
